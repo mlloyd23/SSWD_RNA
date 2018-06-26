@@ -2,10 +2,8 @@ library(dplyr)
 setwd("C:/Users/Melanie/Documents/R/deseq/collagen enrichment")
 
 #phenotype
-pheno<-read.table("pheno_results_no5.txt", sep="\t", header=TRUE)
-head(pheno)
+pheno<-read.table("pheno_results_no5_collagen_annotations.txt", sep="\t", header=TRUE)
 pheno<-pheno[complete.cases(pheno), ]
-dim(pheno)
 
 pheno$abs.stat<-abs(pheno$stat)
 hist(pheno$abs.stat)
@@ -21,9 +19,7 @@ qqline(pheno$stat)
 
 #density plots
 collagen<-subset(pheno, collagen=="1")
-dim(collagen)
 not<-subset(pheno, collagen=="0")
-dim(not)
   
 plot(density(collagen$stat), ylim=c(0,0.6))
 lines(density(not$stat))
@@ -42,21 +38,8 @@ ggplot(pheno, aes(x=stat, fill=collagen)) +
         axis.line = element_line(colour = "black"))
 
 
-
-##immune enrichment???
-immune.pheno<-read.table("immune_enrich_pheno_no5.txt", header=TRUE)
-head(immune.pheno)
-immune.pheno<-immune.pheno[complete.cases(immune.pheno), ]
-dim(immune.pheno)
-immune<-subset(immune.pheno, immune=="1")
-not.immune<-subset(immune.pheno, immune=="0")
-plot(density(immune$stat), ylim=c(0,0.6))
-lines(density(not.immune$stat))
-
-t.test(stat~immune, data=immune.pheno)
-
 #anova interaction
-aov<-read.table("anova_int.txt", header=TRUE)
+aov<-read.table("anova_int_collagen_annotation.txt", header=TRUE)
 aov<-aov[complete.cases(aov), ]
 aov$abs.stat<-abs(aov$stat)
 
@@ -75,13 +58,11 @@ plot(density(collagen.aov$stat), ylim=c(0,2))
 lines(density(not.aov$stat))
 
 
-#pn10
-pn10<-read.table("pn10.txt", header=TRUE)
-dim(pn10)
+##early stage sick vs. healthy
+pn10<-read.table("pn10_collagen_annotation.txt", header=TRUE)
 pn10<-pn10[complete.cases(pn10), ]
 hist(pn10$stat)
 pn10$abs.stat<-abs(pn10$stat)
-head(pn10)
 
 t.test(abs.stat~collagen, data=pn10)
 wilcox.test(abs.stat~collagen, data=pn10)
@@ -89,26 +70,23 @@ boxplot(abs.stat~collagen, data=pn10)
 
 #density plots
 collagen.pn10<-subset(pn10, collagen=="1")
-dim(collagen.pn10)
 not.pn10<-subset(pn10, collagen=="0")
-dim(not.pn10)
 
 plot(density(collagen.pn10$stat), ylim=c(0,0.6))
 lines(density(not.pn10$stat))
 
-#pn21
-pn21<-read.table("pn21.txt", header=TRUE)
+##late stage sick vs early stage sick
+pn21<-read.table("pn21_collagen_annotation.txt", header=TRUE)
 hist(pn21$stat)
 pn21$abs.stat<-abs(pn21$stat)
-head(pn21)
 
 t.test(abs.stat~collagen, data=pn21)
 wilcox.test(abs.stat~collagen, data=pn21)
 boxplot(abs.stat~collagen, data=pn21)
 
 
-#pn20
-pn20<-read.table("pn20.txt", header=TRUE)
+##late stage sick vs. healthy
+pn20<-read.table("pn20.txt_collagen_annotation", header=TRUE)
 hist(pn20$stat)
 pn20$abs.stat<-abs(pn20$stat)
 
